@@ -1,0 +1,338 @@
+﻿<Window x:Class="POS.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:POS"
+        mc:Ignorable="d"
+        Title="Point of Sale - Main Window" Height="550" Width="760" Background="SlateGray">
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width = "*" />
+        </Grid.ColumnDefinitions>
+
+        <TabControl Grid.Column="0" TabStripPlacement="Left">
+            <TabItem Name="POS" Header="POS" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Name="sp1" Grid.Column="0" Margin="15" Background="Beige" Grid.RowSpan="2">
+
+                        <WrapPanel>
+                            <Label Content="User: " FontSize="30" />
+                            <Label Name="lblEmployee" FontSize="30" FontWeight="DemiBold" />
+                        </WrapPanel>
+
+                        <WrapPanel>
+                            <Label Content="Employee ID: " FontSize="20"/>
+                            <Label Name="lblEmpID" FontSize="20" />
+                        </WrapPanel>
+
+                        <Button Name="btnLogout" Content="Log Out" Width="70" Height="30" Margin="10,15,0,30" 
+                                HorizontalAlignment="Left" Click="BtnLogout_Click"/>
+
+                        <DataGrid Name="dgPOSItems" AutoGenerateColumns="False" Margin="10" Height="300"
+                                  IsReadOnly="True" AlternatingRowBackground="SkyBlue"
+                                  CanUserResizeRows="False" CanUserResizeColumns="False">
+                            <DataGrid.ColumnHeaderStyle>
+                                <Style TargetType="{x:Type DataGridColumnHeader}" >
+                                    <Setter Property="Background" Value="SlateGray" />
+                                    <Setter Property="Padding" Value="10" />
+                                </Style>
+                            </DataGrid.ColumnHeaderStyle>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Code" Binding="{Binding Code}" />
+                                <DataGridTextColumn Header="Item" Binding="{Binding Item}" />
+                                <DataGridTextColumn Header="Price" Binding="{Binding Price}" />
+                                <DataGridTemplateColumn Header="Action">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Name="btnSelectItem" Content="Select" Width="50" Height="20"
+                                                    Click="BtnSelectItem_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+
+                    <Grid Name="g1" Grid.Column="1" Margin="15" Background="GhostWhite" Grid.RowSpan="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="320" />
+                            <RowDefinition Height="150" />
+                        </Grid.RowDefinitions>
+
+                        <DataGrid Name="dgOrderList" Grid.Row="0" Margin="10" AutoGenerateColumns="False"
+                                  CanUserResizeColumns="False" CanUserResizeRows="False" CanUserAddRows="False">
+                            <DataGrid.ColumnHeaderStyle>
+                                <Style TargetType="{x:Type DataGridColumnHeader}" >
+                                    <Setter Property="Background" Value="SlateGray" />
+                                    <Setter Property="Padding" Value="10" />
+                                </Style>
+                            </DataGrid.ColumnHeaderStyle>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Order Number" Binding="{Binding Path=OrderNumber}"/>
+                                <DataGridTextColumn Header="Quantity" Binding="{Binding Path=Quantity}"/>
+                                <DataGridTextColumn Header="Item" Binding="{Binding Path=ItemName}"/>
+                                <DataGridTextColumn Header="Price" Binding="{Binding Path=ItemTotal}"/>
+                                <DataGridTemplateColumn Header="Edit" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Name="btnEditOrder" Content="Edit" Width="50" Height="20" 
+                                                    Click="BtnEditOrder_Click" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+
+                        <Grid Name="g2" Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200" />
+                                <ColumnDefinition Width="100" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="100" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Total: " FontSize="15" FontWeight="Bold" Margin="10,0,0,0"/>
+                            <Label Name="labelCartTotal" Grid.Column="1" Grid.Row="0"  FontSize="15" FontWeight="Bold"/>
+
+                            <Button Name="btnClearOrders" Content="Clear Order" Width="70" Height="50" Grid.Row="1" Grid.Column="0"
+                                    Click="BtnClearOrders_Click"/>
+
+                            <Button Name="btnCashOut" Content="Cash Out" Width="70" Height="50" Grid.Row="1" Grid.Column="1"
+                                    Click="BtnCashOut_Click" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Name="UsersTab" Header="Users" >
+
+                <Grid Name="main">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Name="spOptions" Margin="30">
+
+                        <Button Name="btnAddUserTab" Content="Add User" Width="100" Height="50" Margin="0,20,0,10"
+                                Click="BtnAddUserTab_Click"/>
+                        <Button Name="btnEditUserTab" Content="Edit User" Width="100" Height="50" Margin="0,0,0,10"
+                                Click="BtnEditUserTab_Click"/>
+
+                    </StackPanel>
+
+                    <Canvas Grid.Column="1" Background="SlateGray" >
+
+                    </Canvas>
+
+                    <StackPanel Grid.Column="2" Name="spAddUserTab" Margin="10" Background="Beige" Visibility="Hidden">
+
+                        <WrapPanel Margin="10,50,10,10">
+                            <Label Content="First Name: " FontSize="20" Margin="0,0,15,0" />
+                            <TextBox Name="txtFName" Height="30" Width="200" />
+                        </WrapPanel>
+
+                        <WrapPanel Margin="10,0,10,10">
+                            <Label Content="Last Name: " FontSize="20" Margin="0,0,15,0"/>
+                            <TextBox Name="txtLName" Height="30" Width="200" />
+                        </WrapPanel>
+
+                        <WrapPanel Margin="10,0,10,10">
+                            <Label Content="Employee ID: " FontSize="20" />
+                            <TextBox Name="txtEmpID" Height="30" Width="200" />
+                        </WrapPanel>
+
+                        <StackPanel Margin="10,0,10,10">
+                            <Label Content="User Role: " FontSize="20" />
+                            <RadioButton Name="rbUser" Content="Regular User" />
+                            <RadioButton Name="rbAdmin" Content="Administrator" />
+                        </StackPanel>
+
+                        <WrapPanel Margin="10,0,0,0">
+                            <Label Content="Password: " FontSize="20" Margin="0,0,30,0"/>
+                            <PasswordBox Name="txtPassword" Height="30" Width="200" />
+                        </WrapPanel>
+
+                        <WrapPanel Margin="10,0,0,0">
+                            <Label Content="Confirm : " FontSize="20" Margin="0,0,37,0"/>
+                            <PasswordBox Name="txtPasswordConfirm" Height="30" Width="200" />
+                        </WrapPanel>
+
+                        <Button Name="btnNewAddUser" Content="Add User" Width="100" Height="50" Margin="0,25,0,0"
+                                Click="BtnNewAddUser_Click"/>
+
+                    </StackPanel>
+
+                    <Canvas Grid.Column="2" Name="cEditUserTab" Background="Beige" Visibility="Visible">
+
+                        <DataGrid Canvas.Top="20" Canvas.Left="30" Name="dgUserList" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Employee ID" Binding="{Binding Path=Emp_ID}"/>
+                                <DataGridTextColumn Header="First Name" Binding="{Binding Path=FName}"/>
+                                <DataGridTextColumn Header="Last Name" Binding="{Binding Path=LName}" />
+                                <DataGridTextColumn Header="Role Description" Binding="{Binding Path=Role}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Button Canvas.Bottom="20" Canvas.Left="130" Name="btnOpenUser" Content="Open" Width="100" Height="50"
+                                Click="BtnOpenUser_Click"/>
+                    </Canvas>
+
+                </Grid>
+
+            </TabItem>
+
+            <TabItem Name="ItemsTab" Header="Items">
+
+                <Grid Name="ItemsTabmain">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="26*"/>
+                        <RowDefinition Height="487*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Name="spItemsOptions" Margin="30,4,30,30" Grid.Row="1">
+
+                        <Button Name="btnAddItemTab" Content="Add Item" Width="100" Height="50" Margin="0,20,0,10"
+                                Click="BtnAddItemTab_Click"/>
+                        <Button Name="btnEditItemTab" Content="Edit Item" Width="100" Height="50" Margin="0,0,0,10"
+                                Click="BtnEditItemTab_Click"/>
+
+                    </StackPanel>
+
+                    <Canvas Grid.Column="1" Background="SlateGray" Grid.RowSpan="2" >
+
+                    </Canvas>
+
+                    <StackPanel Grid.Column="2" Name="spAddItemTab" Margin="10" Background="Beige" Visibility="Hidden" Grid.RowSpan="2">
+
+                        <WrapPanel Margin="10,50,10,10">
+                            <Label Content="Item Code: " FontSize="20" Margin="0,0,22,0" />
+                            <TextBox Name="txtItemCode" Height="30" Width="200" />
+                        </WrapPanel>
+
+                        <WrapPanel Margin="10,0,10,10">
+                            <Label Content="Item Name: " FontSize="20" Margin="0,0,15,0"/>
+                            <TextBox Name="txtItemName" Height="30" Width="200" />
+                        </WrapPanel>
+
+                        <WrapPanel Margin="10,0,10,10">
+                            <Label Content="Price: " FontSize="20" Margin="0,0,70,0" />
+                            <TextBox Name="txtItemPrice" Height="30" Width="200" />
+                        </WrapPanel>
+
+                        <Button Name="btnNewAddItem" Content="Add Item" Width="100" Height="50" Margin="0,25,0,0"
+                                Click="BtnNewAddItem_Click"/>
+
+                    </StackPanel>
+
+                    <Canvas Grid.Column="2" Name="spEditItemTab" Background="Beige" Visibility="Visible" Grid.RowSpan="2">
+
+                        <DataGrid Canvas.Top="20" Canvas.Left="80" Name="dgItemsList" AutoGenerateColumns="False" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Item Code" Binding="{Binding Path=ItemCode}"/>
+                                <DataGridTextColumn Header="Item Name" Binding="{Binding Path=ItemName}"/>
+                                <DataGridTextColumn Header="Item Price" Binding="{Binding Path=ItemPrice}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Button Canvas.Bottom="20" Canvas.Left="130" Name="btnOpenItem" Content="Open" Width="100" Height="50"
+                                Click="BtnOpenItem_Click"/>
+                    </Canvas>
+
+                </Grid>
+
+            </TabItem>
+
+            <TabItem Name="RecordsTab" Header="Records">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="52*"/>
+                        <RowDefinition Height="461*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="520" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Name="spRecordOptions" Margin="10" Grid.RowSpan="2" >
+
+                        <Button Name="btnDailyIncome" Content="Today's Earnings" Width="100" Height="50" Margin="10" 
+                                Click="BtnDailyIncome_Click" />
+                        <Button Name="btnDailyIncomeRecords" Content="Income Record" Width="100" Height="50" />
+
+                    </StackPanel>
+
+                    <Canvas Grid.Column="1" Background="SlateGray" Grid.RowSpan="2" />
+
+                    <Canvas Grid.Column="2" Name="spDailyIncomeTab" Background="Beige" Visibility="Visible" Grid.RowSpan="2" >
+
+                        <StackPanel Margin="20">
+                            
+                            <WrapPanel>
+                                <TextBlock Text="Date Today: " FontSize="20" />
+                                <TextBlock Name="tbDateToday" FontSize="20"/>
+                            </WrapPanel>
+
+                            <WrapPanel>
+                                <TextBlock Text="Current Earnings: PHP " FontSize="20" />
+                                <TextBlock Name="txtCurrentEarnings" FontSize="20" />
+                            </WrapPanel>
+
+                            <TextBlock Text="Today's Transactions" FontSize="15" FontWeight="Bold" Margin="0,20,0,0" />
+
+                            <DataGrid Name="dgDailyTransactions" AutoGenerateColumns="False" CanUserAddRows="False"
+                                      Height="250" Width="400" 
+                                      Margin="0,20,0,0"
+                                      AlternatingRowBackground="Aquamarine">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding TransID}" />
+                                    <DataGridTextColumn Header="User" Binding="{Binding EmpID}" />
+                                    <DataGridTextColumn Header="Transaction Date" Binding="{Binding Date}" />
+                                    <DataGridTextColumn Header="Total Price" Binding="{Binding Price}" />
+                                    <DataGridTemplateColumn Header="View" >
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Name="btnViewTransaction" Content="View" Width="50" Height="20" 
+                                                        Click="BtnViewTransaction_Click" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <Button Name="btnEnterDailyIncome" Content="Record Income" Width="100" Height="50"  Margin="20"
+                                    Click="BtnEnterDailyIncome_Click" />
+
+                        </StackPanel>
+                      
+                    </Canvas>
+
+                </Grid>
+
+            </TabItem>
+
+        </TabControl>
+
+    </Grid>
+</Window>

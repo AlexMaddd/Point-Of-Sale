@@ -68,7 +68,8 @@
                         </Grid.RowDefinitions>
 
                         <DataGrid Name="dgOrderList" Grid.Row="0" Margin="10" AutoGenerateColumns="False"
-                                  CanUserResizeColumns="False" CanUserResizeRows="False" CanUserAddRows="False">
+                                  CanUserResizeColumns="False" CanUserResizeRows="False" CanUserAddRows="False"
+                                  IsReadOnly="true">
                             <DataGrid.ColumnHeaderStyle>
                                 <Style TargetType="{x:Type DataGridColumnHeader}" >
                                     <Setter Property="Background" Value="SlateGray" />
@@ -179,7 +180,8 @@
 
                     <Canvas Grid.Column="2" Name="cEditUserTab" Background="Beige" Visibility="Visible">
 
-                        <DataGrid Canvas.Top="20" Canvas.Left="30" Name="dgUserList" AutoGenerateColumns="False">
+                        <DataGrid Canvas.Top="20" Canvas.Left="30" Name="dgUserList" AutoGenerateColumns="False"
+                                  CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Employee ID" Binding="{Binding Path=Emp_ID}"/>
                                 <DataGridTextColumn Header="First Name" Binding="{Binding Path=FName}"/>
@@ -246,7 +248,8 @@
 
                     <Canvas Grid.Column="2" Name="spEditItemTab" Background="Beige" Visibility="Visible" Grid.RowSpan="2">
 
-                        <DataGrid Canvas.Top="20" Canvas.Left="80" Name="dgItemsList" AutoGenerateColumns="False" >
+                        <DataGrid Canvas.Top="20" Canvas.Left="80" Name="dgItemsList" AutoGenerateColumns="False"
+                                  CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Item Code" Binding="{Binding Path=ItemCode}"/>
                                 <DataGridTextColumn Header="Item Name" Binding="{Binding Path=ItemName}"/>
@@ -279,13 +282,14 @@
 
                         <Button Name="btnDailyIncome" Content="Today's Earnings" Width="100" Height="50" Margin="10" 
                                 Click="BtnDailyIncome_Click" />
-                        <Button Name="btnDailyIncomeRecords" Content="Income Record" Width="100" Height="50" />
+                        <Button Name="btnDailyIncomeRecords" Content="Income Record" Width="100" Height="50" 
+                                Click="BtnDailyIncomeRecords_Click"/>
 
                     </StackPanel>
 
                     <Canvas Grid.Column="1" Background="SlateGray" Grid.RowSpan="2" />
 
-                    <Canvas Grid.Column="2" Name="spDailyIncomeTab" Background="Beige" Visibility="Visible" Grid.RowSpan="2" >
+                    <Canvas Grid.Column="2" Name="cDailyIncomeTab" Background="Beige" Visibility="Visible" Grid.RowSpan="2">
 
                         <StackPanel Margin="20">
                             
@@ -302,8 +306,8 @@
                             <TextBlock Text="Today's Transactions" FontSize="15" FontWeight="Bold" Margin="0,20,0,0" />
 
                             <DataGrid Name="dgDailyTransactions" AutoGenerateColumns="False" CanUserAddRows="False"
-                                      Height="250" Width="400" 
-                                      Margin="0,20,0,0"
+                                      CanUserDeleteRows="False" IsReadOnly="True"
+                                      Height="250" Width="400" Margin="0,20,0,0"
                                       AlternatingRowBackground="Aquamarine">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="ID" Binding="{Binding TransID}" />
@@ -326,6 +330,35 @@
 
                         </StackPanel>
                       
+                    </Canvas>
+
+                    <Canvas Grid.Column="2" Name="cIncomeRecords" Background="Beige" Visibility="Hidden" Grid.RowSpan="2">
+
+                        <StackPanel Margin="20">
+
+                            <TextBlock Text="Income Date Range" FontSize="20"/>
+
+                            <WrapPanel Margin="0,10,0,0">
+                                <TextBlock Text="From: " FontSize="15" />
+                                <DatePicker Name="dateStart" />
+                            </WrapPanel>
+
+                            <WrapPanel Margin="0,10,0,0">
+                                <TextBlock Text="To: " FontSize="15" />
+                                <DatePicker Name="dateEnd" Margin="15,0,0,0"/>
+                            </WrapPanel>
+
+                            <Button Name="btnComputeIncomeRange" Content="Compute" Height="25" Width="75" HorizontalAlignment="Left" 
+                                    Margin="0,15,0,0"
+                                    Click="BtnComputeIncomeRange_Click"/>
+
+                            <WrapPanel Margin="0,25,0,0">
+                                <TextBlock Text="Total: " FontSize="15"/>
+                                <TextBlock Name="txtRangeIncomeTotal" FontSize="20" FontWeight="Bold" />
+                            </WrapPanel>
+
+                        </StackPanel>
+                        
                     </Canvas>
 
                 </Grid>

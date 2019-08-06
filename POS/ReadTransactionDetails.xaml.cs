@@ -23,6 +23,7 @@ namespace POS
         }
 
 
+        // gets transaction details for specific transaction
         public void Load_GetTransactionDetails()
         {
             string queryViewTransDetails = string.Format("SELECT " +

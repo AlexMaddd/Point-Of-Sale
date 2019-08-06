@@ -7,6 +7,7 @@ namespace POS
 {
     class DataConnection
     {
+        // properties
         private string server;
         private string database;
         private string userID;
@@ -16,6 +17,8 @@ namespace POS
         private SqlConnection conn = null;
         private SqlConnectionStringBuilder c_sqlb = new SqlConnectionStringBuilder();
 
+
+        // getters and setters for private properties
         public string ConnectionString { get { return this.connstring; } }
         public string Server { get { return this.server; } set { this.server = value; c_sqlb["Server"] = this.server; connstring = c_sqlb.ConnectionString; } }
         public string Database { get { return this.database; } set { this.database = value; c_sqlb["Database"] = this.database; connstring = c_sqlb.ConnectionString; } }
@@ -23,6 +26,8 @@ namespace POS
         public string Password { get { return this.password; } set { this.Password = value; c_sqlb["Password"] = this.password; connstring = c_sqlb.ConnectionString; } }
 
 
+        // constructor for this Class
+        // recieves credentials from Globals Class
         public DataConnection(string server, string database, string userId, string password)
         {
             this.Server = server;
@@ -39,13 +44,14 @@ namespace POS
         }
 
 
+        // creates connection to DB
         public SqlConnection Connect()
         {
             try
             {
                 if (conn.State == ConnectionState.Open)
                 {
-                    conn.ConnectionString = this.connstring;
+                    // conn.ConnectionString = this.connstring;
                     conn.Open();
                     //this.OnConnected(new ErrMessageArgs("Connection Successful"));
                 }
@@ -66,6 +72,7 @@ namespace POS
         }
 
 
+        // closes connection to DB
         public void Close()
         {
             try

@@ -13,6 +13,7 @@ namespace POS
     /// </summary>
     public partial class App : Application
     {
+        // catches all unhandled exceptions 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             MessageBox.Show("Unhandled Exception " + e.Exception.Message, MessageBoxButton.OK.ToString());

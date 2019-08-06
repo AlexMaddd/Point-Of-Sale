@@ -41,6 +41,8 @@ namespace POS
         }
 
 
+        // returns SqlConnection instance
+        // credentials passed into constructor creates ConnectionString 
         public static DataConnection DbConnect()
         {
             DataConnection dbConnect = new DataConnection(server, database, userID, password);

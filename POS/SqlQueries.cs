@@ -13,6 +13,8 @@ namespace POS
         static SqlCommand cmd = new SqlCommand();
         static SqlDataReader reader;
 
+
+        // logins user
         public static bool Login(string query, int emp_id, string password)
         {
             int affectedrows = -1;
@@ -73,6 +75,8 @@ namespace POS
             return false;
         }
 
+
+        // inserts into transactions table
         public static bool SqlExecNQInsertTransactionsTable(string query, int cartTotal, int emp_id, string orderType)
         {
             int affectedrows = -1;
@@ -109,6 +113,7 @@ namespace POS
         }
 
 
+        // inserts into transaction details table
         public static bool SqlExecNQInsertTransactionDetails(string query, List<Item> items)
         {
             int affectedrows = -1;
@@ -147,6 +152,8 @@ namespace POS
         }
 
 
+        // loads datagrid values from DB
+        // single query method for all datagrid controls
         public static DataTable Load_DataGridItems(string query)
         {
             DataTable dtable = new DataTable();
@@ -176,6 +183,7 @@ namespace POS
         }
 
 
+        // gets employee name for MainWindow display
         public static string GetEmployeeName(string query, int emp_id)
         {
             string empName = "";
@@ -216,6 +224,7 @@ namespace POS
         }
 
 
+        // inserts new item into DB
         public static bool InsertNewItem(string query, string itemCode, string itemName, int price)
         {
             int affectedrows = -1;
@@ -253,7 +262,8 @@ namespace POS
         }
 
 
-        public static bool InsertIntoUsersTable(string query, int emp_id, string fname, string lname)
+        // inserts new user details into Users Information table
+        public static bool InsertIntoUsersInformationTable(string query, int emp_id, string fname, string lname)
         {
             int affectedrows = -1;
 
@@ -289,7 +299,8 @@ namespace POS
         }
 
 
-        public static bool InsertIntoUserDetailsTable(string query, int role_id, string password)
+        // inserts new active user into Users table
+        public static bool InsertIntoUsersTable(string query, int role_id, string password)
         {
             int affectedrows = -1;
 
@@ -326,6 +337,7 @@ namespace POS
         }
 
 
+        // updates item details
         public static bool UpdateItem(string query, string itemName, int itemPrice, string itemCode)
         {
             int affectedrows = -1;
@@ -366,6 +378,7 @@ namespace POS
         }
 
 
+        // deletes item data
         public static bool DeleteItem(string query, string itemCode)
         {
             int affectedrows = -1;
@@ -403,6 +416,7 @@ namespace POS
         }
 
 
+        // records login and logout of user
         public static bool Logger(string query, int emp_id, string buttonName)
         {
             int affectedrows = -1;
@@ -450,6 +464,7 @@ namespace POS
         }
 
 
+        // edits user data
         public static bool EditUserData(string query, int emp_id, int role_id, string fname, string lname)
         {
             int affectedrows = -1;
@@ -489,6 +504,7 @@ namespace POS
         }
 
 
+        // soft deletes user from active status and prevents login into main application
         public static bool DeactivateUser(string query, int emp_id)
         {
             int affectedrows = -1;
@@ -520,6 +536,8 @@ namespace POS
         }
 
 
+        // computes daily total income
+        // adds all transactions for the day
         public static int GetCurrentDailyIncome(string query)
         {
             int total = 0;
@@ -566,6 +584,7 @@ namespace POS
         }
 
 
+        // gets all transaction details for each transaction entry
         public static DataTable Load_GetTransactionDetails(string query, int trans_id)
         {
             DataTable dtable = new DataTable();
@@ -598,6 +617,7 @@ namespace POS
         }
 
 
+        // gets all transaction entry for the day
         public static DataTable Load_GetDailyTransactions(string query)
         {
             DataTable dtable = new DataTable();
@@ -630,6 +650,8 @@ namespace POS
         }
 
 
+        // checks for daily income record entry 
+        // checks whether it needs to create or update an existing entry
         public static bool CheckForExistingDailyIncomeRecord(string query)
         {
             int row = -1;
@@ -644,7 +666,7 @@ namespace POS
 
                     cmd.Parameters.AddWithValue("@date", DateTime.Now.ToString("yyyy-MM-dd"));
 
-                    if(!DBNull.Value.Equals(cmd.ExecuteScalar()))
+                    if(cmd.ExecuteScalar() != null)
                     {
                         row = 1;
                     }
@@ -669,6 +691,7 @@ namespace POS
         }
 
 
+        // checks if it is not necessary to update existing daily income record entry
         public static bool CheckForExistingTotalIncomeDifference(string query, int total_income)
         {
             cmd.Connection = dc.Connect();
@@ -702,6 +725,7 @@ namespace POS
         }
 
 
+        //  creates a daily income record entry or updates and existing entry
         public static bool SqlExecNQInsertIntoDailyIncomeRecord(string query, int total_income)
         {
             int affectedrows = -1;
@@ -737,6 +761,71 @@ namespace POS
             }
 
             return false;
+        }
+
+
+        // gets the first daily income record entry to set start date
+        // for computing income range
+        public static string GetFirstIncomeDate(string query)
+        {
+            string date = null;
+
+            cmd.Connection = dc.Connect();
+
+            if(cmd.Connection.State == ConnectionState.Open)
+            {
+                try
+                {
+                    cmd.CommandText = query;
+
+                    date = cmd.ExecuteScalar().ToString();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("Something went wrong in getting start date: " + ex.Message);
+                }
+            }
+
+            cmd.Dispose();
+            dc.Close();
+
+            return date;
+        }
+
+
+        // computes all daily incom record totals 
+        // within the specified date range
+        public static int ComputeIncomeRange(string query, string _startDate, string _endDate)
+        {
+            int total = 0;
+
+            DateTime startDate = Convert.ToDateTime(_startDate);
+            DateTime endDate = Convert.ToDateTime(_endDate);
+
+            cmd.Connection = dc.Connect();
+
+            if(cmd.Connection.State == ConnectionState.Open)
+            {
+                try
+                {
+                    cmd.CommandText = query;
+
+                    cmd.Parameters.AddWithValue("@startDate", startDate.ToString("yyyy-MM-dd"));
+                    cmd.Parameters.AddWithValue("@endDate", endDate.ToString("yyyy-MM-dd"));
+
+                    total = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("Something went wrong in computing range income: " + ex.Message);
+                }
+            }
+
+            cmd.Parameters.Clear();
+            cmd.Dispose();
+            dc.Close();
+
+            return total;
         }
 
     }

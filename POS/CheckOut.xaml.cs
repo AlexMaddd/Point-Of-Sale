@@ -37,6 +37,8 @@ namespace POS
             ShowDetails(items);
         }
 
+
+        // shows current transaction details for check out
         public void ShowDetails(List<Item> items)
         {
             dgDetails.ItemsSource = items;
@@ -44,6 +46,8 @@ namespace POS
             lblTotal.Content = "PHP " + cartTotal.ToString();
         }
 
+
+        // records transaction into Transactions table and Transaction Details table
         private void BtnDone_Click(object sender, RoutedEventArgs e)
         {
             if(cbDineIn.IsSelected = false && cbTakeOut.IsSelected == false && cbDriveThru.IsSelected == false)

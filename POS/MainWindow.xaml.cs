@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Windows;
 
@@ -8,7 +9,11 @@ namespace POS
 
     public partial class MainWindow : Window
     {
+        // List for transaction items
         public List<Item> items = new List<Item>();
+
+        // List for storing price * quantity total 
+        // for List<Item> items transactions
         public List<int> total = new List<int>();
 
         private int cartTotal = 0;
@@ -16,6 +21,7 @@ namespace POS
         public int orderCounter = 1;
 
         private string empName;
+        private bool logout = false;
 
         public MainWindow()
         {
@@ -33,6 +39,13 @@ namespace POS
             Load_DailyTransactions();
             Load_ActiveUsers();
             Load_Items();
+
+            SetCalendarConstraints();
+
+            // listens for .Close() event and checks whether logout = true 
+            // to properly close program without using default window close btn
+            this.Closing += new CancelEventHandler(OnClosing);
+
         }
 
         //computes and outputs total purchase
@@ -142,6 +155,7 @@ namespace POS
         }
 
 
+        // checks role to determine access to tabs
         public void CheckRole()
         {
             if (Globals.Role_ID == 1)
@@ -159,6 +173,7 @@ namespace POS
         }
 
 
+        // accesses interface to create user
         private void BtnAddUserTab_Click(object sender, RoutedEventArgs e)
         {
             spAddUserTab.Visibility = Visibility.Visible;
@@ -173,6 +188,7 @@ namespace POS
         }
 
 
+        // enter button to create new user
         private void BtnNewAddUser_Click(object sender, RoutedEventArgs e)
         {
             int role_id;
@@ -196,7 +212,7 @@ namespace POS
                 {
                     if (txtPassword.Password == txtPasswordConfirm.Password)
                     {
-                        if(SqlQueries.InsertIntoUsersTable(queryAddNewUser, Convert.ToInt32(txtEmpID.Text), txtFName.Text, txtLName.Text) == true)
+                        if(SqlQueries.InsertIntoUsersInformationTable(queryAddNewUser, Convert.ToInt32(txtEmpID.Text), txtFName.Text, txtLName.Text) == true)
                         {
                             if (rbUser.IsChecked == true)
                             {
@@ -207,7 +223,7 @@ namespace POS
                                 role_id = 1;
                             }
 
-                            if (SqlQueries.InsertIntoUserDetailsTable(queryInsertIntoUsersTable, role_id, txtPassword.Password) == true)
+                            if (SqlQueries.InsertIntoUsersTable(queryInsertIntoUsersTable, role_id, txtPassword.Password) == true)
                             {
                                 MessageBox.Show("New User Added");
                                 Helper.ClearInsertUserInputs(spAddUserTab);
@@ -235,6 +251,7 @@ namespace POS
         }
 
 
+        // loads all active users in DB
         public void Load_ActiveUsers()
         {
             string querySelectAllActiveUsers = string.Format("SELECT " +
@@ -260,6 +277,7 @@ namespace POS
         }
 
 
+        // reads active user data
         private void BtnOpenUser_Click(object sender, RoutedEventArgs e)
         {
             DataRowView row = dgUserList.SelectedItem as DataRowView;
@@ -301,6 +319,7 @@ namespace POS
         }
 
 
+        // loads all available menu utems
         public void Load_Items()
         {
             string querySelectAllItems = string.Format("SELECT item_code AS ItemCode, " +
@@ -319,6 +338,7 @@ namespace POS
         }
 
 
+        // accesses interface to add new item
         private void BtnAddItemTab_Click(object sender, RoutedEventArgs e)
         {
             spAddItemTab.Visibility = Visibility.Visible;
@@ -333,6 +353,7 @@ namespace POS
         }
 
 
+        // enter button to add new item
         private void BtnNewAddItem_Click(object sender, RoutedEventArgs e)
         {
             string queryAddNewItem = string.Format("INSERT INTO items " +
@@ -367,7 +388,8 @@ namespace POS
             }
         }
 
-
+        
+        // opens window to view item data
         private void BtnOpenItem_Click(object sender, RoutedEventArgs e)
         {
             DataRowView row = dgItemsList.SelectedItem as DataRowView;
@@ -376,6 +398,8 @@ namespace POS
         }
 
 
+        // button to logout
+        // sets logout data to true to close application
         private void BtnLogout_Click(object sender, RoutedEventArgs e)
         {
             string queryLoggerOut = string.Format("INSERT INTO timelog" +
@@ -393,7 +417,13 @@ namespace POS
 
                     Login login = new Login();
 
-                    this.Close();
+                    logout = true;
+
+                    if(logout == true)
+                    {
+                        this.Close();
+                    }
+                 
 
                     login.Show();
                 }
@@ -410,6 +440,7 @@ namespace POS
         }
 
 
+        // selects and opens new window to set item quantity
         private void BtnSelectItem_Click(object sender, RoutedEventArgs e)
         {
             DataRowView row = dgPOSItems.SelectedItem as DataRowView;
@@ -418,6 +449,8 @@ namespace POS
             ow.ShowDialog();
         }
 
+        
+        // clears all orders 
         private void BtnClearOrders_Click(object sender, RoutedEventArgs e)
         {
             if(cartTotal != 0)
@@ -438,6 +471,7 @@ namespace POS
         }
 
 
+        // loads list of transactions for current date
         public void Load_DailyTransactions()
         {
             string queryLoadDailyTransactions = string.Format("SELECT " +
@@ -452,6 +486,7 @@ namespace POS
         }
 
 
+        // computes income for today and displays as text
         public void GetCurrentDailyIncome()
         {
             string queryGetCurrentDailyIncome = string.Format("SELECT SUM(CAST(total_price AS Int)) AS Total_Income " +
@@ -465,12 +500,25 @@ namespace POS
         }
 
 
+        // Records tab button
+        // shows daily income interface
         private void BtnDailyIncome_Click(object sender, RoutedEventArgs e)
         {
-
+            cDailyIncomeTab.Visibility = Visibility.Visible;
+            cIncomeRecords.Visibility = Visibility.Hidden;
         }
 
 
+        // Records tab button
+        // shows range income interface
+        private void BtnDailyIncomeRecords_Click(object sender, RoutedEventArgs e)
+        {
+            cDailyIncomeTab.Visibility = Visibility.Hidden;
+            cIncomeRecords.Visibility = Visibility.Visible;
+        }
+
+
+        // opens window to view transaction details for specific transaction
         private void BtnViewTransaction_Click(object sender, RoutedEventArgs e)
         {
             DataRowView row = dgDailyTransactions.SelectedItem as DataRowView;
@@ -479,6 +527,7 @@ namespace POS
         }
 
 
+        // creates or updates DB data for current daily income
         private void BtnEnterDailyIncome_Click(object sender, RoutedEventArgs e)
         {
             int dailyIncome = Convert.ToInt32(txtCurrentEarnings.Text);
@@ -521,6 +570,76 @@ namespace POS
                 {
                     MessageBox.Show("Previous record is unchanged. Nothing to update");
                 }
+            }
+        }
+
+
+        // listens for .Close() method and checks whether logout value is true or false
+        // forces user to use logout button to close MainWindow Window and return to login form
+        private void OnClosing(object sender, CancelEventArgs e)
+        {
+            if(logout == false)
+            {
+                e.Cancel = true;
+                MessageBox.Show("LogOut Required");
+            }
+        }
+
+
+        // Computes income from specified date ranges
+        private void BtnComputeIncomeRange_Click(object sender, RoutedEventArgs e)
+        {
+            if(dateStart.SelectedDate != null && dateEnd.SelectedDate != null)
+            {
+                string queryComputeIncomeRange = string.Format("SELECT SUM(CAST(total_income AS INT)) AS Total_Income " +
+                                               "FROM daily_IncomeRecord " +
+                                               "WHERE date " +
+                                               "BETWEEN @startDate AND @endDate");
+
+                string startDate = dateStart.Text;
+                string endDate = dateEnd.Text;
+
+                int total = SqlQueries.ComputeIncomeRange(queryComputeIncomeRange, startDate, endDate);
+
+                if (total > 0)
+                {
+                    txtRangeIncomeTotal.Text = total.ToString();
+                }
+                else
+                {
+                    MessageBox.Show("asdsadas");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Select range");
+            }
+           
+        }
+
+
+        // sets constraints for start date and end date
+        private void SetCalendarConstraints()
+        {
+            string queryFirstIncomeDate = string.Format("SELECT TOP 1 date " +
+                                            "FROM daily_IncomeRecord " +
+                                            "ORDER BY date ASC");
+
+            string resultDate = SqlQueries.GetFirstIncomeDate(queryFirstIncomeDate);
+
+            if(resultDate != null)
+            {
+                DateTime startingDate = Convert.ToDateTime(resultDate);
+     
+                dateStart.DisplayDateStart = startingDate;
+                dateStart.DisplayDateEnd = DateTime.Now;
+
+                dateEnd.DisplayDateEnd = DateTime.Now;
+                dateEnd.DisplayDateStart = startingDate;
+            }
+            else
+            {
+                MessageBox.Show("No starting date detected");
             }
         }
 

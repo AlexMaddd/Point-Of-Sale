@@ -6,6 +6,8 @@ namespace POS
 { 
     class Helper
     {
+
+        // checks for empty or null textboxes
         public static bool CheckInsertItemInputs(Panel selectedPanel)
         {
             foreach (var panel in selectedPanel.Children.OfType<Panel>())
@@ -30,6 +32,7 @@ namespace POS
         }
 
 
+        // clears textboxes after insert
         public static void ClearInsertItemInputs(Panel selectedPanel)
         {
             foreach (var panel in selectedPanel.Children.OfType<Panel>())
@@ -50,6 +53,7 @@ namespace POS
         }
 
 
+        // checks for empty or null controls
         public static bool CheckInsertUserInputs(Panel selectedPanel, RadioButton rbUser, RadioButton rbAdmin)
         {
             foreach (var panel in selectedPanel.Children.OfType<Panel>())
@@ -87,6 +91,7 @@ namespace POS
         }
 
 
+        // clears controls after insert
         public static void ClearInsertUserInputs(Panel selectedPanel)
         {
             foreach (var panel in selectedPanel.Children.OfType<Panel>())

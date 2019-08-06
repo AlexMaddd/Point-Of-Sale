@@ -28,12 +28,16 @@ namespace POS
             row = _row;
         }
 
+
+        // button to increase item quantity
         private void BtnIncrement_Click(object sender, RoutedEventArgs e)
         {
             quantity = ++quantity;
             txtQuantity.Text = quantity.ToString();
         }
 
+
+        // button to decrease item quantity
         private void BtnDecrement_Click(object sender, RoutedEventArgs e)
         {
             if(quantity >= 1)
@@ -43,6 +47,8 @@ namespace POS
             }
         }
 
+
+        // button to enter order item into List<Item> items
         private void BtnEnter_Click(object sender, RoutedEventArgs e)
         {
             ComputeItemTotal();
@@ -62,9 +68,12 @@ namespace POS
             main.ClearOrder();
             main.Load_dgItemList();
             main.Cart_Total();
+
             this.Close();
         }
 
+
+        // computes for total price of selected item
         private void ComputeItemTotal()
         {
             itemTotal = quantity * Convert.ToInt32(row["Price"]);

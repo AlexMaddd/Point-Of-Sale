@@ -108,6 +108,7 @@ namespace POS
         }
 
 
+        // clears current transaction
         public void ClearOrderList()
         {
             items.Clear();
@@ -313,6 +314,8 @@ namespace POS
             return true;
         }
 
+
+        // resets order counter for current transaction
         public void OrderCounterReset()
         {
             orderCounter = 0;

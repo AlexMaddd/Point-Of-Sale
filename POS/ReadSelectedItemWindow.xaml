@@ -1,0 +1,29 @@
+﻿<Window x:Class="POS.ReadSelectedItemWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:POS"
+        mc:Ignorable="d"
+        Title="ReadSelectedItemWindow" Height="350" Width="250" Background="SlateGray">
+    <StackPanel Name="spSelectedItemWindow">
+
+        <Label Content="Item Code: " FontSize="15" />
+        <Label Name="lblItemCode" FontSize="15"  Content="{Binding Path=ItemCode}" />
+        <Label Content="Item Name: " FontSize="15" />
+        <TextBox Name="txtItemName" Width="230" Height="20" Text="{Binding Path=ItemName}" IsEnabled="False"/>
+        <Label Content="Price: " FontSize="15" />
+        <TextBox Name="txtItemPrice" Width="230" Height="20" Text="{Binding Path=ItemPrice}" IsEnabled="False"/>
+       
+        
+        <WrapPanel Margin="0,40,0,30" HorizontalAlignment="Center">
+            <Button Name="btnEdit" Content="Edit Item" Width="100" Height="30"  Margin="0,0,20,0"
+                    Click="BtnEdit_Click"/>
+            <Button Name="btnDelete" Content="Delete Item" Width="100" Height="30" 
+                    Click="BtnDelete_Click"/>
+        </WrapPanel>
+
+        <Button Name="btnBack" Content="Back" Width="100" Height="30" Click="BtnBack_Click"/>
+
+    </StackPanel>
+</Window>

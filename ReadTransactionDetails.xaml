@@ -1,0 +1,30 @@
+﻿<Window x:Class="POS.ReadTransactionDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:POS"
+        mc:Ignorable="d"
+        Title="ReadTransactionDetails" Height="400" Width="300" Background="SlateGray">
+    <StackPanel HorizontalAlignment="Center" Margin="10">
+
+        <WrapPanel>
+            <TextBlock Text="Transaction ID: " FontSize="20" />
+            <TextBlock Name="tbTransID" FontSize="20" />
+        </WrapPanel>
+
+        <DataGrid Name="dgTransDetails" AutoGenerateColumns="false" CanUserAddRows="false" CanUserDeleteRows="False"
+                  CanUserResizeRows="False" CanUserResizeColumns="False"
+                  Width="250" Height="200"
+                  Margin="0,10,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Item Name" Binding="{Binding ItemName}" />
+                <DataGridTextColumn Header="Item Price" Binding="{Binding ItemPrice}" />
+                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Name="btnClose" Content="Close" Width="100" Height="50" Click="BtnClose_Click"  Margin="20"/>
+
+    </StackPanel>
+</Window>

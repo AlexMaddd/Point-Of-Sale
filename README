@@ -1,1 +1,7 @@
-password stored in DB is not encrypted
+Point of Sale made in WPF
+
+Features:
+- has basic user roles and access
+- CRUD function for items and users
+- daily income recording 
+- receipt printing of transaction ( PDF )

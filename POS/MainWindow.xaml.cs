@@ -112,6 +112,7 @@ namespace POS
         public void ClearOrderList()
         {
             items.Clear();
+            total.Clear();
         }
 
         //clears DataGrid and labelCartTotal after cashing out
@@ -140,6 +141,7 @@ namespace POS
                 if (!String.IsNullOrWhiteSpace(empName)) 
                 {
                     lblEmployee.Content = empName;
+                    Globals.Emp_Name = empName;
                     lblEmpID.Content = Globals.Emp_ID;
                 }
                 else

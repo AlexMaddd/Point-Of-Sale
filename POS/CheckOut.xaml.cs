@@ -1,17 +1,8 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace POS
 {
@@ -24,7 +15,12 @@ namespace POS
         private List<Item> items;
 
         private int cartTotal;
+        private int change;
+        private int amountPaid = 0;
+
         private string cbResult;
+
+        private bool hasPaid = false;
 
         public CheckOut(List<Item> _items, int _cartTotal,  MainWindow _main)
         {
@@ -33,15 +29,6 @@ namespace POS
             items = _items;
             main = _main;
             cartTotal = _cartTotal;
-
-            ShowDetails(items);
-        }
-
-
-        // shows current transaction details for check out
-        public void ShowDetails(List<Item> items)
-        {
-            dgDetails.ItemsSource = items;
 
             lblTotal.Content = "PHP " + cartTotal.ToString();
         }
@@ -54,6 +41,10 @@ namespace POS
             {
                 MessageBox.Show("Select Order Type!");
             }
+            else if(hasPaid == false)
+            {
+                MessageBox.Show("Enter amount paid!");
+            }
             else
             {
                 MessageBoxResult result = MessageBox.Show("Finish transaction?", "Confrim", MessageBoxButton.YesNo);
@@ -62,12 +53,13 @@ namespace POS
                 {
                     string queryInsertIntoTransactionsTable = string.Format(
                                                    "INSERT INTO transactions" +
-                                                   "(transaction_date, total_price, emp_id, order_type) " +
+                                                   "(transaction_date, total_price, emp_id, order_type, amount_paid, change) " +
                                                    "VALUES(" +
                                                    "@transaction_date, @total_price, @emp_id, " +
                                                    "(SELECT orderType_id " +
                                                    "FROM order_type " +
-                                                   "WHERE orderType_description = @order_type)" +
+                                                   "WHERE orderType_description = @order_type), " +
+                                                   "@amount_paid, @change" +
                                                    ")"
                                                    );
 
@@ -83,20 +75,25 @@ namespace POS
 
                     cbResult = cborderType.SelectionBoxItem.ToString();
 
-                    if (SqlQueries.SqlExecNQInsertTransactionsTable(queryInsertIntoTransactionsTable, cartTotal, Globals.Emp_ID, cbResult) == true)
+                    if (SqlQueries.SqlExecNQInsertTransactionsTable(queryInsertIntoTransactionsTable, cartTotal, Globals.Emp_ID, cbResult, amountPaid, change) == true)
                     {
                         if (SqlQueries.SqlExecNQInsertTransactionDetails(queryInsertIntoTransactionDetails, items) == true)
                         {
                             MessageBox.Show("Transaction Complete!");
-                            main.ClearOrderList();
-                            main.ClearOrder();
-                            main.GetCurrentDailyIncome();
-                            main.Load_DailyTransactions();
+                            MessageBox.Show(cbResult.ToString());
+                            Receipt receipt = new Receipt(items, cartTotal, amountPaid, change, cbResult, main);
+                            receipt.ShowDialog();
+
+                            //main.ClearOrderList();
+                            //main.ClearOrder();
+                            //main.GetCurrentDailyIncome();
+                            //main.Load_DailyTransactions();
+
                             this.Close();
                         }
                         else
                         {
-                            MessageBox.Show("Something went wrong");
+                            MessageBox.Show("Something went wrongggg");
                         }
                     }
                     else
@@ -111,6 +108,25 @@ namespace POS
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+
+        private void BtnCompute_Click(object sender, RoutedEventArgs e)
+        {
+            amountPaid = Convert.ToInt32(tbAmountPaid.Text);
+
+            if(amountPaid < cartTotal)
+            {
+                MessageBox.Show("Paid amount less than amount payable");
+            }
+            else
+            {
+                change = amountPaid - cartTotal;
+                txtChange.Text = change.ToString();
+
+                hasPaid = true;
+            }
+         
         }
     }
 }

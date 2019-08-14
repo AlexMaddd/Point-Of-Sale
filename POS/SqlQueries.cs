@@ -77,7 +77,7 @@ namespace POS
 
 
         // inserts into transactions table
-        public static bool SqlExecNQInsertTransactionsTable(string query, int cartTotal, int emp_id, string orderType)
+        public static bool SqlExecNQInsertTransactionsTable(string query, int cartTotal, int emp_id, string orderType, int amountPaid, int change)
         {
             int affectedrows = -1;
 
@@ -91,6 +91,8 @@ namespace POS
                 cmd.Parameters.AddWithValue("@total_price", cartTotal);
                 cmd.Parameters.AddWithValue("@emp_id", emp_id);
                 cmd.Parameters.AddWithValue("@order_type", orderType);
+                cmd.Parameters.AddWithValue("@amount_paid", amountPaid);
+                cmd.Parameters.AddWithValue("@change", change);
 
                 affectedrows = cmd.ExecuteNonQuery();
 

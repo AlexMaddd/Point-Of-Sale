@@ -71,6 +71,9 @@
     <Compile Include="ReadTransactionDetails.xaml.cs">
       <DependentUpon>ReadTransactionDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Receipt.xaml.cs">
+      <DependentUpon>Receipt.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SelectedOrderWindow.xaml.cs">
       <DependentUpon>SelectedOrderWindow.xaml</DependentUpon>
     </Compile>
@@ -115,6 +118,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ReadTransactionDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Receipt.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

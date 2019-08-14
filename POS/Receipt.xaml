@@ -1,0 +1,84 @@
+﻿<Window x:Class="POS.Receipt"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:POS"
+        mc:Ignorable="d"
+        Title="Receipt" Height="750" Width="600">
+    <StackPanel Margin="20">
+
+        <StackPanel Name="spMain" Margin="0,0,0,50">
+            <TextBlock Text="Receipt" FontSize="30" FontWeight="SemiBold" HorizontalAlignment="Center" />
+
+            <WrapPanel Margin="0,30,0,0">
+                <TextBlock Text="Cashier: " FontSize="15" />
+                <TextBlock Name="txtUser" FontSize="15" FontWeight="SemiBold" />
+            </WrapPanel>
+
+            <WrapPanel Margin="0,10,0,10">
+                <TextBlock Text="Date: " FontSize="15" />
+                <TextBlock Name="txtDate" FontSize="15" FontWeight="SemiBold"/>
+            </WrapPanel>
+
+            <WrapPanel>
+                <TextBlock Text="Order Type: " FontSize="15"/>
+                <TextBlock Name="txtOrderType" FontSize="15" FontWeight="SemiBold"/>
+            </WrapPanel>
+
+            <Rectangle Fill="Black" Height="1" Margin="0,20,0,10"/>
+
+            <Grid Margin="0,10,0,10" Background="SlateGray">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Item" Grid.Column="0" FontSize="15" FontWeight="Bold"/>
+                <TextBlock Text="Price" Grid.Column="1" FontSize="15" FontWeight="Bold" />
+                <TextBlock Text="Quantity" Grid.Column="2" FontSize="15" FontWeight="Bold" />
+                <TextBlock Text="Total" Grid.Column="3" FontSize="15" FontWeight="Bold" />
+            </Grid>
+
+            <StackPanel Name="sp" Margin="0,0,0,50" />
+
+            <Rectangle Fill="Black" Height="1" Margin="0,10,0,10" />
+
+            <Grid Margin="0,10,0,10" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="Amount Due: " FontSize="20" />
+                <TextBlock Grid.Column="1" Grid.Row="0" Name="txtDue" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="Amount Paid: " FontSize="20" />
+                <TextBlock Grid.Column="1" Grid.Row="1" Name="txtPaid" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+
+                <TextBlock Grid.Column="0" Grid.Row="2" Text="Change: " FontSize="20" />
+                <TextBlock Grid.Column="1" Grid.Row="2" Name="txtChange" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Grid>
+        </StackPanel>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Name="btnPrint" Content="Print" FontSize="20" Width="150" Height="50" Click="BtnPrint_Click" />
+            <Button Grid.Column="1" Name="btnClose" Content="Close" FontSize="20" Width="150" Height="50" Click="BtnClose_Click" />
+        </Grid>
+
+
+    </StackPanel>
+</Window>

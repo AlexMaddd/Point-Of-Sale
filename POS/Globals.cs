@@ -10,6 +10,7 @@ namespace POS
     {
         private static int emp_id;
         private static int role_id;
+        private static string emp_name;
 
         private static readonly string server = "localhost";
         private static readonly string database = "pos";
@@ -37,6 +38,19 @@ namespace POS
             set
             {
                 role_id = value;
+            }
+        }
+
+
+        public static string Emp_Name
+        {
+            get
+            {
+                return emp_name;
+            }
+            set
+            {
+                emp_name = value;
             }
         }
 

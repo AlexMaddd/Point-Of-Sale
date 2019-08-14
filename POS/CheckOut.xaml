@@ -5,24 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:POS"
         mc:Ignorable="d"
-        Title="Check Out" Height="500" Width="450" Background="Gray" Margin="10">
-    <StackPanel Name="sp1"  HorizontalAlignment="Center" Margin="10">
-        <StackPanel Name="sp2" HorizontalAlignment="Center" Background="GhostWhite" Margin="0,20,0,0">
-            <DataGrid Name="dgDetails" HorizontalAlignment="Center" Height="180" Width="300" 
-                      AutoGenerateColumns="False" >
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Item Name" Binding="{Binding Path=ItemName}" />
-                    <DataGridTextColumn Header="Item Price" Binding="{Binding Path=Price}" />
-                    <DataGridTextColumn Header="Quantity" Binding="{Binding Path=Quantity}" />
-                    <DataGridTextColumn Header="Item Total" Binding="{Binding Path=ItemTotal}" />
-                </DataGrid.Columns>
-            </DataGrid>
+        Title="Check Out" Height="350" Width="300" Background="SlateGray" Margin="10">
+    <StackPanel Name="sp1" HorizontalAlignment="Center" Margin="10">
 
-        </StackPanel>
-
-        <WrapPanel Name="wrap1" HorizontalAlignment="Center" Background="GhostWhite" Margin="0,10,0,20">
+        <WrapPanel Margin="0,10,0,10">
             <Label Content="Total Price: " FontSize="15" />
             <Label Name="lblTotal" FontSize="15" />
+        </WrapPanel>
+
+        <WrapPanel Margin="0,0,0,10">
+            <TextBlock Text="Amount Paid: " FontSize="15" />
+            <TextBox Name="tbAmountPaid" Text="0" Width="75" />
+            <Button Name="btnCompute" Content="Compute" Width="60" Height="20" Click="BtnCompute_Click"/>
+        </WrapPanel>
+
+        <WrapPanel Margin="0,0,0,20">
+            <TextBlock Text="Change: " FontSize="15" />
+            <TextBlock Name="txtChange" FontSize="15" FontWeight="Bold"/>
         </WrapPanel>
 
         <Label Content="Select Order Type:" FontSize="15" FontWeight="Bold" HorizontalAlignment="Center" />
@@ -33,12 +32,11 @@
         </ComboBox>
 
 
-        <WrapPanel HorizontalAlignment="Center" Margin="0,20,0,0">
-            <Button x:Name="btnDone" Content="Done" Width="100" Height="50" Click="BtnDone_Click"  
-                    Margin="0,0,20,0"/>
-            <Button x:Name="btnBack" Content="Back" Width="100" Height="50" Click="BtnBack_Click"/>
+        <WrapPanel HorizontalAlignment="Center" Margin="0,50,0,0">
+            <Button x:Name="btnBack" Content="Back" Width="100" Height="50" Click="BtnBack_Click" Margin="0,0,20,0"
+                    Background="Orange"/>
+            <Button x:Name="btnDone" Content="Done" Width="100" Height="50" Click="BtnDone_Click" Background="LightGreen"/>
         </WrapPanel>
      
-
     </StackPanel>
 </Window>
